@@ -42,6 +42,7 @@ public class ReceiverController {
             textMessage.setContent("您发送的消息是：" + content);
             message = MessageUtil.textMessageToXml(textMessage);
         }
+        // 根据消息类型做不同的分发
         return message;
     }
 }
