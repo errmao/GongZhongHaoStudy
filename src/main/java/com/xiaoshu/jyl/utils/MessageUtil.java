@@ -113,7 +113,7 @@ public class MessageUtil {
         NewsItem item = new NewsItem();
         item.setTitle("国家破产之日影评");
         item.setDescription("《国家破产之日》将镜头对准了1997年的亚洲金融风暴。讲述国家破产前的一周时间内，想要阻止危机的人和追逐利益的人身上发生的故事。金慧秀在片中饰演最早预见破产并开始寻找对策的韩国银行通货政策小组组长韩诗贤，面对复杂的体系和权利关系，她面前的道路可谓困难重重.");
-        item.setPicUrl("https://baike.baidu.com/pic/%E5%9B%BD%E5%AE%B6%E7%A0%B4%E4%BA%A7%E4%B9%8B%E6%97%A5/22049095/0/7e3e6709c93d70cf5667da4bf5dcd100bba12bd2?fr=lemma&ct=single#aid=25843406&pic=08f790529822720e69b41cf474cb0a46f21fab42");
+        item.setPicUrl("http://9b84382e.ngrok.io/images/11.jpg");
         item.setUrl("http://www.baidu.com");
         list = new ArrayList<>();
         list.add(item);

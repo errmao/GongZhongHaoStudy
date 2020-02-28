@@ -38,7 +38,7 @@ public class GeneralNewsServiceImpl implements GeneralNewsService {
             // 调出菜单导航
             returnContent = MessageTemplateUtils.getGzhNavigationMenu();
         } else if ("3".equals(receiverContent)) {
-            returnContent = MessageUtil.returnNewsMessage(map, null);
+            return MessageUtil.returnNewsMessage(map, null);
         } else {
             // 其他内容
             returnContent = "您发送的内容是：" + receiverContent;
