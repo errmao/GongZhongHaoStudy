@@ -1,7 +1,5 @@
 package com.xiaoshu.jyl.service.message.impl;
 
-import com.xiaoshu.jyl.constant.MessageTypeConstant;
-import com.xiaoshu.jyl.entity.TextMessage;
 import com.xiaoshu.jyl.service.message.GeneralNewsService;
 import com.xiaoshu.jyl.utils.MessageTemplateUtils;
 import com.xiaoshu.jyl.utils.MessageUtil;
@@ -29,31 +27,21 @@ public class GeneralNewsServiceImpl implements GeneralNewsService {
         String receiverContent = map.get("Content");
         String returnContent = "";
         if ("1".equals(receiverContent)) {
-            // 本公众号的介绍
-            returnContent = MessageTemplateUtils.getGzhIntroduction();
+            // 返回本公众号的介绍
+            return MessageTemplateUtils.getGzhIntroduction();
         } else if ("2".equals(receiverContent)) {
-            // 作者介绍
+            // 返回作者介绍
             returnContent = MessageTemplateUtils.getGzhAuthorIntroduction();
         } else if ("?".equals(receiverContent) || "？".equals(receiverContent)) {
             // 调出菜单导航
-            returnContent = MessageTemplateUtils.getGzhNavigationMenu();
+            return MessageTemplateUtils.getGzhNavigationMenu();
         } else if ("3".equals(receiverContent)) {
+            // 返回图文消息
             return MessageUtil.returnNewsMessage(map, null);
         } else {
             // 其他内容
-            returnContent = "您发送的内容是：" + receiverContent;
+            return "您发送的内容是：" + receiverContent;
         }
-        return MessageUtil.returnTextMessage(map, returnContent);
-    }
-
-    /**
-     * 图片消息处理并回复
-     *
-     * @param map 接收消息
-     * @return
-     */
-    @Override
-    public String doImageService(Map<String, String> map) {
-        return "";
+        return null;
     }
 }

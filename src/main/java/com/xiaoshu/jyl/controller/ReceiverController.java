@@ -41,9 +41,6 @@ public class ReceiverController {
         if (MessageTypeConstant.TEXT.equals(messageType)) {
             // 文本消息
             message = generalNewsService.doTextMsg(map);
-        } else if (MessageTypeConstant.IMAGE.equals(message)) {
-            // 图片消息
-            message = generalNewsService.doImageService(map);
         } else if (MessageTypeConstant.EVENT.equals(messageType)) {
             // 推送事件
             String eventType = map.get("Event");

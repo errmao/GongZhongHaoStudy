@@ -17,12 +17,4 @@ public interface GeneralNewsService {
      * @return
      */
     String doTextMsg(Map<String, String> map);
-
-    /**
-     * 图片消息处理并回复
-     *
-     * @param map 接收消息
-     * @return
-     */
-    String doImageService(Map<String, String> map);
 }
