@@ -14,24 +14,32 @@ public class AccessTokenUtil {
     private static String appId = "wx463d77c010f7142a";
     private static String appsecret = "d2655d10a91ff210ce09dbbfaf037b51";
     private static String accessTokenUrl = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+    // 存储token
+    private static AccessToken at;
 
     /**
      * 获取token
      */
-    private static String getToken() {
+    private static void getToken() {
         String url = accessTokenUrl.replace("APPID", appId).replace("APPSECRET", appsecret);
         String result = HttpUtils.doGet(url, null);
         JSONObject jsonObject = JSONObject.parseObject(result);
         String accessToken = jsonObject.getString("access_token");
         String expiresIn = jsonObject.getString("expires_in");
-
-        return "";
+        // 创建token对象并保存
+        at = new AccessToken(accessToken, expiresIn);
     }
 
     /**
-     * @param args
+     * 向外暴露获取access token的方法
+     *
+     * @return
      */
-    public static void main(String[] args) {
-        getToken();
+    public static String getAccessToken() {
+        if (at == null || at.isExpired()) {
+            getToken();
+        }
+        return at.getAccessToken();
     }
+
 }
