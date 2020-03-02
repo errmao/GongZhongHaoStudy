@@ -1,10 +1,7 @@
 package com.xiaoshu.jyl.utils;
 
 import com.thoughtworks.xstream.XStream;
-import com.xiaoshu.jyl.constant.MessageTypeConstant;
-import com.xiaoshu.jyl.entity.NewsItem;
-import com.xiaoshu.jyl.entity.NewsMessage;
-import com.xiaoshu.jyl.entity.TextMessage;
+import com.xiaoshu.jyl.entity.message.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -13,7 +10,6 @@ import org.dom4j.io.SAXReader;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,76 +48,53 @@ public class MessageUtil {
     }
 
     /**
-     * 文本消息对象转xml
+     * 消息对象转xml
      *
-     * @param textMessage
+     * @param msg
      * @return
      */
-    public static String textMessageToXml(TextMessage textMessage) {
+    public static String messageBeanToXml(BaseMessage msg) {
         XStream xStream = new XStream();
-        xStream.alias("xml", textMessage.getClass());
-        return xStream.toXML(textMessage);
+        xStream.processAnnotations(new Class[]{
+                BaseMessage.class, TextMessage.class,
+                VoiceMessage.class, VideoMessage.class, MusicMessage.class,
+                ImageMessage.class, ArticlesMessge.class});
+        System.err.println(xStream.toXML(msg));
+        return xStream.toXML(msg);
     }
 
     /**
-     * 图文消息对象转xml
+     * 获取公众号导航菜单信息
      *
-     * @param newsMessage
-     * @return
+     * @return 导航信息
      */
-    public static String newsMessageToXml(NewsMessage newsMessage) {
-        XStream xStream = new XStream();
-        xStream.alias("xml", NewsMessage.class);
-        xStream.alias("item", NewsItem.class);
-        return xStream.toXML(newsMessage);
+    public static String getGzhNavigationMenu(Map<String, String> map) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("欢迎您的关注，请按照提示操作：\n");
+        sb.append("1. 本期作家推荐\n");
+        sb.append("2. 本期图片推荐\n");
+        sb.append("3. 获取最新推荐的语音\n");
+        sb.append("4. 获取最新推荐的视频\n");
+        sb.append("5. 获取最新推荐的音乐\n");
+        sb.append("6. 获取最新推荐的电影推荐\n");
+        sb.append("回复\"0\"获取导航菜单");
+        String msg = sb.toString();
+        TextMessage textMessage = new TextMessage(map);
+        textMessage.setContent(msg);
+        return MessageUtil.messageBeanToXml(textMessage);
     }
 
     /**
      * 回复文本消息
      *
      * @param map     接收消息
-     * @param content 返回的文本内容
+     * @param content 回复的文本内容
      * @return
      */
-    public static String returnTextMessage(Map<String, String> map, String content) {
-        String fromUserName = map.get("FromUserName");
-        String toUserName = map.get("ToUserName");
-        TextMessage textMessage = new TextMessage();
-        textMessage.setFromUserName(toUserName);
-        textMessage.setToUserName(fromUserName);
-        textMessage.setMsgType(MessageTypeConstant.TEXT);
-        textMessage.setCreateTime(System.currentTimeMillis());
+    public static String replayTextMessage(Map<String, String> map, String content) {
+        TextMessage textMessage = new TextMessage(map);
         textMessage.setContent(content);
-        return MessageUtil.textMessageToXml(textMessage);
+        return MessageUtil.messageBeanToXml(textMessage);
     }
-
-    /**
-     * 回复图文消息
-     *
-     * @param map
-     * @param list 图文集合
-     * @return
-     */
-    public static String returnNewsMessage(Map<String, String> map, List<NewsItem> list) {
-        String fromUserName = map.get("FromUserName");
-        String toUserName = map.get("ToUserName");
-        NewsMessage newsMessage = new NewsMessage();
-        newsMessage.setFromUserName(toUserName);
-        newsMessage.setToUserName(fromUserName);
-        newsMessage.setMsgType(MessageTypeConstant.NEWS);
-        newsMessage.setCreateTime(System.currentTimeMillis());
-        NewsItem item = new NewsItem();
-        item.setTitle("国家破产之日影评");
-        item.setDescription("《国家破产之日》将镜头对准了1997年的亚洲金融风暴。讲述国家破产前的一周时间内，想要阻止危机的人和追逐利益的人身上发生的故事。金慧秀在片中饰演最早预见破产并开始寻找对策的韩国银行通货政策小组组长韩诗贤，面对复杂的体系和权利关系，她面前的道路可谓困难重重.");
-        item.setPicUrl("http://9b84382e.ngrok.io/images/11.jpg");
-        item.setUrl("http://www.baidu.com");
-        list = new ArrayList<>();
-        list.add(item);
-        newsMessage.setArticles(list);
-        newsMessage.setArticleCount(list.size());
-        return MessageUtil.newsMessageToXml(newsMessage);
-
-    }
-
 
 }

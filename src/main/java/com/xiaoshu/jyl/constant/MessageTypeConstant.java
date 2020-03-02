@@ -29,6 +29,11 @@ public class MessageTypeConstant {
     public static final String VIDEO = "video";
 
     /**
+     * 音乐消息
+     */
+    public static final String MUSIC = "music";
+
+    /**
      * 链接消息
      */
     public static final String LINK = "link";

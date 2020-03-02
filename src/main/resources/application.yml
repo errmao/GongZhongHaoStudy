@@ -1,3 +1,11 @@
 spring:
   mvc:
     static-path-pattern: /**
+
+ngrok:
+  addr: http://08ab7509.ngrok.io
+
+wx:
+  appID: wx463d77c010f7142a
+  appsecret: d2655d10a91ff210ce09dbbfaf037b51
+  access_token: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET

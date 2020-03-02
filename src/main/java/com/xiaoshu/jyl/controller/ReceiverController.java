@@ -1,8 +1,6 @@
 package com.xiaoshu.jyl.controller;
 
-import com.xiaoshu.jyl.constant.MessageTypeConstant;
-import com.xiaoshu.jyl.service.message.EventPushService;
-import com.xiaoshu.jyl.service.message.GeneralNewsService;
+import com.xiaoshu.jyl.service.message.MessageService;
 import com.xiaoshu.jyl.utils.MessageUtil;
 import org.dom4j.DocumentException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,35 +21,20 @@ import java.util.Map;
 public class ReceiverController {
 
     @Resource
-    private GeneralNewsService generalNewsService;
+    private MessageService messageService;
 
-    @Resource
-    private EventPushService eventPushService;
-
+    /**
+     * 消息请求
+     *
+     * @param request
+     * @return
+     * @throws IOException
+     * @throws DocumentException
+     */
     @PostMapping("authFirst")
-    public String reciverMessage(HttpServletRequest request) throws IOException, DocumentException {
-
+    public String receiveMessage(HttpServletRequest request) throws IOException, DocumentException {
+        // 将xml的输入消息转化为map集合
         Map<String, String> map = MessageUtil.xmlToMap(request);
-        // 消息类型（参考常量MessageTypeConstant）
-        String messageType = map.get("MsgType");
-
-        // 返回值
-        String message = null;
-        // 根据消息类型做不同的分发
-        if (MessageTypeConstant.TEXT.equals(messageType)) {
-            // 文本消息
-            message = generalNewsService.doTextMsg(map);
-        } else if (MessageTypeConstant.EVENT.equals(messageType)) {
-            // 推送事件
-            String eventType = map.get("Event");
-            // 订阅
-            if (MessageTypeConstant.SUBSCRIBE.equals(eventType)) {
-                message = eventPushService.doSubscribeEvent(map);
-            } else if (MessageTypeConstant.UNSUBSCRIBE.equals(eventType)) {
-                // 取消订阅
-                message = eventPushService.doUnsubscribeEvent(map);
-            }
-        }
-        return message;
+        return messageService.wxMessageRouter(map);
     }
 }
