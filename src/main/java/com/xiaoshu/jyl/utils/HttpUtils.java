@@ -1,18 +1,23 @@
 package com.xiaoshu.jyl.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.Charsets;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
@@ -121,6 +126,48 @@ public class HttpUtils {
             }
         }
         return result;
+    }
+
+    /**
+     * post 发送 String 类型数据
+     *
+     * @param url  地址
+     * @param data 数据
+     * @return
+     * @throws Exception
+     */
+    public static String doPost(String url, String data) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader("Content-Type", "application/json;charset=UTF-8");
+        httpPost.setHeader("Accept", "application/json");
+        httpPost.setEntity(new StringEntity(data, StandardCharsets.UTF_8));
+        CloseableHttpResponse response = null;
+        try {
+            response = httpClient.execute(httpPost);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("请求发送失败，请求地址：{}", url);
+            log.error("请求发送失败，异常信息：{}", e);
+        }
+        HttpEntity entity = response.getEntity();
+        String responseContent = null;
+        try {
+            responseContent = EntityUtils.toString(entity, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("获取返回信息失败，请求地址：{}", url);
+            log.error("获取返回信息失败，异常信息：{}", e);
+        }
+        try {
+            response.close();
+            httpClient.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("资源关闭失败，异常信息：{}", e);
+        }
+        log.info("接收返回信息：{}", responseContent);
+        return responseContent;
     }
 
     /**
