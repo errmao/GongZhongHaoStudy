@@ -16,4 +16,12 @@ public interface MessageService {
      * @param map 输入参数map
      */
     String wxMessageRouter(Map<String, String> map);
+
+    /**
+     * 接收事件推送处理总线
+     *
+     * @param map 输入参数map
+     * @return
+     */
+    String doEvent(Map<String, String> map);
 }

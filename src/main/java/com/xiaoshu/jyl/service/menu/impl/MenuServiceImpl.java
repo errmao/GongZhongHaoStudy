@@ -35,8 +35,9 @@ public class MenuServiceImpl implements MenuService {
         SubButton subButton = new SubButton("有子菜单");
         // 为第三个一级菜单增加子菜单
         subButton.getSub_button().add(new PhotoOrAlbumButton("传图", "31"));
-        subButton.getSub_button().add(new ClickButton("32", "点击"));
+        subButton.getSub_button().add(new ClickButton("32", "子菜单测试点击"));
         subButton.getSub_button().add(new ViewButton("网易新闻", "http://news.163.com"));
+        subButton.getSub_button().add(new LocationSelectButton("位置发送", "33"));
         // 加入第三个一级菜单
         btn.getButton().add(subButton);
         // 转为json

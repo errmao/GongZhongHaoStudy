@@ -25,4 +25,13 @@ public interface EventPushService {
      * @return
      */
     String doUnsubscribeEvent(Map<String, String> map);
+
+    /**
+     * click事件处理
+     *
+     * @param map 接收消息
+     * @return
+     */
+    String clickEvent(Map<String, String> map);
+
 }

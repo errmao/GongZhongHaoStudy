@@ -2,6 +2,8 @@ package com.xiaoshu.jyl.utils;
 
 import com.thoughtworks.xstream.XStream;
 import com.xiaoshu.jyl.entity.message.*;
+import jdk.internal.jline.internal.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -20,6 +22,7 @@ import java.util.Map;
  * @author xxddds
  * @date 2020/2/15 16:05
  */
+@Slf4j
 public class MessageUtil {
 
     /**
@@ -44,6 +47,9 @@ public class MessageUtil {
             map.put(element.getName(), element.getText());
         }
         inputStream.close();
+        log.info("========  接收信息 开始 ========");
+        log.info(map.toString());
+        log.info("========  接收信息 结束 ========");
         return map;
     }
 
@@ -59,7 +65,9 @@ public class MessageUtil {
                 BaseMessage.class, TextMessage.class,
                 VoiceMessage.class, VideoMessage.class, MusicMessage.class,
                 ImageMessage.class, ArticlesMessge.class});
-        System.err.println(xStream.toXML(msg));
+        log.info("========== 返回信息开始 =================");
+        log.info(xStream.toXML(msg));
+        log.info("========== 返回信息结束 =================");
         return xStream.toXML(msg);
     }
 
