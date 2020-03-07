@@ -7,8 +7,6 @@ import com.xiaoshu.jyl.utils.AccessTokenUtil;
 import com.xiaoshu.jyl.utils.HttpUtils;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.View;
-
 /**
  * 菜单相关事项
  *

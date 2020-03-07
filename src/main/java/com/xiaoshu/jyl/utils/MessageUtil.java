@@ -2,7 +2,6 @@ package com.xiaoshu.jyl.utils;
 
 import com.thoughtworks.xstream.XStream;
 import com.xiaoshu.jyl.entity.message.*;
-import jdk.internal.jline.internal.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
