@@ -4,10 +4,12 @@ import com.xiaoshu.jyl.entity.message.Articles;
 import com.xiaoshu.jyl.entity.message.ArticlesMessge;
 import com.xiaoshu.jyl.entity.message.TextMessage;
 import com.xiaoshu.jyl.service.message.TextMessageService;
+import com.xiaoshu.jyl.service.templatemessage.TemplateMessageService;
 import com.xiaoshu.jyl.utils.MessageUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -22,6 +24,9 @@ public class TextMessageServiceImpl implements TextMessageService {
 
     @Value("ngrok.addr")
     private String ngrokIp;
+
+    @Resource
+    private TemplateMessageService templateMessageService;
 
     /**
      * 接收文本消息并回复
@@ -43,6 +48,10 @@ public class TextMessageServiceImpl implements TextMessageService {
             case "6":
                 // 本期电影推荐（图文）
                 return getLatestNews(map);
+            case "7":
+                // 发生模板消息
+                templateMessageService.sendTemplateMessage();
+                break;
             case "0":
                 // 获取导航菜单
                 return MessageUtil.getGzhNavigationMenu(map);
@@ -60,7 +69,7 @@ public class TextMessageServiceImpl implements TextMessageService {
      */
     private String getLatestAuthor(Map<String, String> map) {
         String msg = "金庸（1924年3月10日—2018年10月30日），本名查良镛，生于浙江省海宁市，1948年移居香港。" +
-                     "当代武侠小说作家、新闻学家、企业家、政治评论家、社会活动家，被誉为“香港四大才子”之一，与古龙、梁羽生、温瑞安并称为中国武侠小说四大宗师。";
+                "当代武侠小说作家、新闻学家、企业家、政治评论家、社会活动家，被誉为“香港四大才子”之一，与古龙、梁羽生、温瑞安并称为中国武侠小说四大宗师。";
         TextMessage textMessage = new TextMessage(map);
         textMessage.setContent(msg);
         return MessageUtil.messageBeanToXml(textMessage);

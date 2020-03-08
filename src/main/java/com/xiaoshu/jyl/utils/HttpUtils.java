@@ -106,6 +106,7 @@ public class HttpUtils {
                 UrlEncodedFormEntity entity = new UrlEncodedFormEntity(pairs);
                 httpPost.setEntity(entity);
             }
+            log.info("访问路径：" + url);
             HttpResponse response = httpClient.execute(httpPost);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 result = EntityUtils.toString(response.getEntity(), "utf-8");

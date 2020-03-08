@@ -84,6 +84,7 @@ public class MessageUtil {
         sb.append("4. 获取最新推荐的视频\n");
         sb.append("5. 获取最新推荐的音乐\n");
         sb.append("6. 获取最新推荐的电影推荐\n");
+        sb.append("7. 获取待办信息\n");
         sb.append("回复\"0\"获取导航菜单");
         String msg = sb.toString();
         TextMessage textMessage = new TextMessage(map);
