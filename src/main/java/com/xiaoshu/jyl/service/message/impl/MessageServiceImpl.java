@@ -2,6 +2,7 @@ package com.xiaoshu.jyl.service.message.impl;
 
 import com.xiaoshu.jyl.constant.MessageTypeConstant;
 import com.xiaoshu.jyl.service.message.EventPushService;
+import com.xiaoshu.jyl.service.message.ImageService;
 import com.xiaoshu.jyl.service.message.MessageService;
 import com.xiaoshu.jyl.service.message.TextMessageService;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class MessageServiceImpl implements MessageService {
     @Resource
     private EventPushService eventPushService;
 
+    @Resource
+    private ImageService imageService;
+
     /**
      * 微信消息分发路由
      *
@@ -34,12 +38,18 @@ public class MessageServiceImpl implements MessageService {
 
         // 消息类型（参考常量MessageTypeConstant）
         String messageType = map.get("MsgType");
-        // 根据消息类型做不同的分发
+
         if (MessageTypeConstant.TEXT.equals(messageType)) {
-            // 文本消息
+            // 文本
             return textMessageService.replyMessage(map);
+
         } else if (MessageTypeConstant.EVENT.equals(messageType)) {
+            // 事件
             return doEvent(map);
+
+        } else if (MessageTypeConstant.IMAGE.equals(messageType)) {
+            // 图片
+            return imageService.dealImage(map);
         }
         return null;
     }
